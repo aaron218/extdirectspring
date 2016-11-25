@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,7 +93,7 @@ public final class MethodInfo {
 		this.synchronizeOnSession = extDirectMethodAnnotation.synchronizeOnSession();
 		this.streamResponse = extDirectMethodAnnotation.streamResponse();
 
-		if (type != ExtDirectMethodType.FORM_POST) {
+		if (this.type != ExtDirectMethodType.FORM_POST) {
 			this.method = method;
 			this.parameters = buildParameterList(clazz, method);
 
@@ -101,7 +101,7 @@ public final class MethodInfo {
 					? null : extDirectMethodAnnotation.entryClass();
 
 			if (this.collectionType == null) {
-				for (ParameterInfo parameter : parameters) {
+				for (ParameterInfo parameter : this.parameters) {
 					Class<?> collType = parameter.getCollectionType();
 					if (collType != null) {
 						this.collectionType = collType;
@@ -146,7 +146,7 @@ public final class MethodInfo {
 			}
 		}
 
-		switch (type) {
+		switch (this.type) {
 		case SIMPLE:
 			int paramLength = 0;
 			for (ParameterInfo parameter : this.parameters) {
@@ -172,7 +172,7 @@ public final class MethodInfo {
 
 			if (noOfClientParameters == 1 && Map.class.isAssignableFrom(parameterType)) {
 				this.action = Action.createNamed(method.getName(),
-						Collections.<String> emptyList(), Boolean.FALSE,
+						Collections.<String>emptyList(), Boolean.FALSE,
 						extDirectMethodAnnotation.batched());
 			}
 			else {
@@ -210,7 +210,7 @@ public final class MethodInfo {
 			break;
 		default:
 			throw new IllegalStateException(
-					"ExtDirectMethodType: " + type + " does not exists");
+					"ExtDirectMethodType: " + this.type + " does not exists");
 		}
 
 		this.action = extractDocumentationAnnotations(
@@ -294,23 +294,23 @@ public final class MethodInfo {
 	}
 
 	public Method getMethod() {
-		return method;
+		return this.method;
 	}
 
 	public String getForwardPath() {
-		return forwardPath;
+		return this.forwardPath;
 	}
 
 	public HandlerMethod getHandlerMethod() {
-		return handlerMethod;
+		return this.handlerMethod;
 	}
 
 	public List<ParameterInfo> getParameters() {
-		return parameters;
+		return this.parameters;
 	}
 
 	public Class<?> getCollectionType() {
-		return collectionType;
+		return this.collectionType;
 	}
 
 	public boolean isType(ExtDirectMethodType methodType) {
@@ -318,27 +318,27 @@ public final class MethodInfo {
 	}
 
 	public Class<?> getJsonView() {
-		return jsonView;
+		return this.jsonView;
 	}
 
 	public boolean isSynchronizeOnSession() {
-		return synchronizeOnSession;
+		return this.synchronizeOnSession;
 	}
 
 	public boolean isStreamResponse() {
-		return streamResponse;
+		return this.streamResponse;
 	}
 
 	public PollingProvider getPollingProvider() {
-		return pollingProvider;
+		return this.pollingProvider;
 	}
 
 	public Action getAction() {
-		return action;
+		return this.action;
 	}
 
 	public String getGroup() {
-		return group;
+		return this.group;
 	}
 
 	/**

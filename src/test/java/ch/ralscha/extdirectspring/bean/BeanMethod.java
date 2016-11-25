@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,19 +33,19 @@ public class BeanMethod {
 	}
 
 	public String getBean() {
-		return bean;
+		return this.bean;
 	}
 
 	public String getMethod() {
-		return method;
+		return this.method;
 	}
 
 	public Object getData() {
-		return data;
+		return this.data;
 	}
 
 	public int getTid() {
-		return tid;
+		return this.tid;
 	}
 
 	public void setTid(int tid) {

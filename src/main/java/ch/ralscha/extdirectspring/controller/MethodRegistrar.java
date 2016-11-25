@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,13 +24,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.MethodIntrospector;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils.MethodFilter;
 import org.springframework.util.StringUtils;
-import org.springframework.web.method.HandlerMethodSelector;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
@@ -66,7 +66,7 @@ public class MethodRegistrar
 			Class<?> handlerType = context.getType(beanName);
 			final Class<?> userType = ClassUtils.getUserClass(handlerType);
 
-			Set<Method> methods = HandlerMethodSelector.selectMethods(userType,
+			Set<Method> methods = MethodIntrospector.selectMethods(userType,
 					new MethodFilter() {
 						@Override
 						public boolean matches(Method method) {
@@ -81,7 +81,7 @@ public class MethodRegistrar
 				final String beanAndMethodName = beanName + "." + method.getName();
 				if (directMethodAnnotation.value().isValid(beanAndMethodName, userType,
 						method)) {
-					methodInfoCache.put(beanName, handlerType, method,
+					this.methodInfoCache.put(beanName, handlerType, method,
 							event.getApplicationContext());
 
 					// /CLOVER:OFF

@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 
 @Service
 @SuppressWarnings("unused")
@@ -66,8 +67,9 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod(group = "group2,groupX")
-	public String method3(long i, Double d, String s) {
-		return String.format("method3() called-%d-%.1f-%s", i, d, s);
+	public String method3(long i, Double d, String s, ExtDirectRequest directRequest) {
+		return String.format("method3() called-%d-%.1f-%s-%s", i, d, s,
+				directRequest != null);
 	}
 
 	@ExtDirectMethod(group = "group2,groupX")
@@ -364,7 +366,7 @@ public class RemoteProviderSimple {
 		}
 
 		public int getId() {
-			return id;
+			return this.id;
 		}
 
 		public void setId(int id) {
@@ -372,7 +374,7 @@ public class RemoteProviderSimple {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -380,7 +382,7 @@ public class RemoteProviderSimple {
 		}
 
 		public BigDecimal getBd() {
-			return bd;
+			return this.bd;
 		}
 
 		public void setBd(BigDecimal bd) {
@@ -389,7 +391,8 @@ public class RemoteProviderSimple {
 
 		@Override
 		public String toString() {
-			return "BusinessObject [id=" + id + ", name=" + name + ", bd=" + bd + "]";
+			return "BusinessObject [id=" + this.id + ", name=" + this.name + ", bd="
+					+ this.bd + "]";
 		}
 
 	}

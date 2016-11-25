@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -111,31 +111,31 @@ public class Action {
 	}
 
 	public Boolean getFormHandler() {
-		return formHandler;
+		return this.formHandler;
 	}
 
 	public Integer getLen() {
-		return len;
+		return this.len;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public List<String> getParams() {
-		return params;
+		return this.params;
 	}
 
 	public Boolean getStrict() {
-		return strict;
+		return this.strict;
 	}
 
 	public Metadata getMetadata() {
-		return metadata;
+		return this.metadata;
 	}
 
 	public Boolean getBatched() {
-		return batched;
+		return this.batched;
 	}
 
 	class Metadata {
@@ -147,7 +147,7 @@ public class Action {
 		}
 
 		public List<String> getParams() {
-			return params;
+			return this.params;
 		}
 	}
 }

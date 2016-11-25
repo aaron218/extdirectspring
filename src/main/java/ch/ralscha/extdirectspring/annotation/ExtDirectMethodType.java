@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import ch.ralscha.extdirectspring.bean.EdFormPostResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 
 /**
@@ -174,7 +175,8 @@ public enum ExtDirectMethodType {
 
 			boolean isValid = true;
 
-			if (method.getReturnType().equals(ExtDirectFormPostResult.class)) {
+			if (method.getReturnType().equals(ExtDirectFormPostResult.class)
+					|| method.getReturnType().equals(EdFormPostResult.class)) {
 				ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils
 						.findAnnotation(method, ExtDirectMethod.class);
 				if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
@@ -284,7 +286,7 @@ public enum ExtDirectMethodType {
 			}
 			else {
 				log.error("FORM_POST method '" + beanAndMethodName
-						+ "' must return void or an instance of ExtDirectFormPostResult");
+						+ "' must return void or an instance of ExtDirectFormPostResult or EdFormPostResult");
 				isValid = false;
 			}
 

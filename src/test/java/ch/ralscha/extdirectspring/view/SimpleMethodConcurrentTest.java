@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,15 +49,15 @@ public class SimpleMethodConcurrentTest extends BaseViewTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
 	public void testMultiple1() {
 		List<BeanMethod> bms = new ArrayList<BeanMethod>();
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
-		List<Map<String, Object>> results = ControllerUtil.sendAndReceiveMultiple(mockMvc,
-				bms);
+		List<Map<String, Object>> results = ControllerUtil
+				.sendAndReceiveMultiple(this.mockMvc, bms);
 		assertThat(results).hasSize(1);
 		Map<String, Object> result = results.get(0);
 		assertThat(result).hasSize(noView().length);
@@ -70,8 +70,8 @@ public class SimpleMethodConcurrentTest extends BaseViewTest {
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
 		bms.add(new BeanMethod("simpleMethodService", "annotationSummaryView"));
 		bms.add(new BeanMethod("simpleMethodService", "annotationDetailView"));
-		List<Map<String, Object>> results = ControllerUtil.sendAndReceiveMultiple(mockMvc,
-				bms);
+		List<Map<String, Object>> results = ControllerUtil
+				.sendAndReceiveMultiple(this.mockMvc, bms);
 		assertThat(results).hasSize(3);
 
 		int ix = 0;
@@ -90,8 +90,8 @@ public class SimpleMethodConcurrentTest extends BaseViewTest {
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
 		bms.add(new BeanMethod("simpleMethodService", "overrideSubclassDetailView"));
 		bms.add(new BeanMethod("simpleMethodService", "overrideSubclassNoView"));
-		List<Map<String, Object>> results = ControllerUtil.sendAndReceiveMultiple(mockMvc,
-				bms);
+		List<Map<String, Object>> results = ControllerUtil
+				.sendAndReceiveMultiple(this.mockMvc, bms);
 		assertThat(results).hasSize(5);
 
 		int ix = 0;

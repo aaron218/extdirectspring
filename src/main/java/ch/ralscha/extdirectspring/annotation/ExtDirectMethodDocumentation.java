@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,16 +97,14 @@ public @interface ExtDirectMethodDocumentation {
 	 * <p/>
 	 * Defaults to no parameters.
 	 */
-	ExtDirectDocParameters parameters() default @ExtDirectDocParameters
-	;
+	ExtDirectDocParameters parameters() default @ExtDirectDocParameters;
 
 	/**
 	 * (Optional) objects to be returned when this method is called
 	 * <p/>
 	 * Defaults to no return.
 	 */
-	ExtDirectDocReturn returnMethod() default @ExtDirectDocReturn
-	;
+	ExtDirectDocReturn returnMethod() default @ExtDirectDocReturn;
 
 	/**
 	 * (Optional) Whether this method is deprecated

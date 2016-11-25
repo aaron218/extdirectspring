@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -283,7 +283,7 @@ public class SimpleServiceTest extends JettyTest2 {
 
 	private static void postToEcho(List<String> datas, List<String> expectedResult,
 			HttpClient client)
-					throws IOException, JsonParseException, JsonMappingException {
+			throws IOException, JsonParseException, JsonMappingException {
 
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,15 +80,15 @@ public class ApiControllerTest {
 
 	@Before
 	public void setupApiController() throws Exception {
-		methodInfoCache.clear();
-		apiCache.clear();
-		wac.publishEvent(new ContextRefreshedEvent(wac));
+		this.methodInfoCache.clear();
+		this.apiCache.clear();
+		this.wac.publishEvent(new ContextRefreshedEvent(this.wac));
 
 		Configuration config = new Configuration();
-		ReflectionTestUtils.setField(configurationService, "configuration", config);
-		configurationService.afterPropertiesSet();
+		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
+		this.configurationService.afterPropertiesSet();
 
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class ApiControllerTest {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("remotingApiVar").pollingUrlsVar("pollingUrlsVar")
 				.build();
-		runTest(mockMvc, params, allApis(null));
+		runTest(this.mockMvc, params, allApis(null));
 	}
 
 	@Test
@@ -105,13 +105,13 @@ public class ApiControllerTest {
 		config.setEnableBuffer(10);
 		config.setMaxRetries(2);
 		config.setTimeout(12000);
-		ReflectionTestUtils.setField(configurationService, "configuration", config);
-		configurationService.afterPropertiesSet();
+		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
+		this.configurationService.afterPropertiesSet();
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("testC")
 				.remotingApiVar("remotingApiV").pollingUrlsVar("pollingUrlsV")
 				.configuration(config).build();
-		runTest(mockMvc, params, allApis(null));
+		runTest(this.mockMvc, params, allApis(null));
 	}
 
 	@Test
@@ -119,7 +119,7 @@ public class ApiControllerTest {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns")
 				.actionNs("actionns").remotingApiVar("TEST_REMOTING_API")
 				.pollingUrlsVar("TEST_POLLING_URLS").build();
-		runTest(mockMvc, params, allApis("actionns"));
+		runTest(this.mockMvc, params, allApis("actionns"));
 	}
 
 	@Test
@@ -128,13 +128,13 @@ public class ApiControllerTest {
 		Configuration config = new Configuration();
 		config.setEnableBuffer(Boolean.FALSE);
 		config.setTimeout(10000);
-		ReflectionTestUtils.setField(configurationService, "configuration", config);
-		configurationService.afterPropertiesSet();
+		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
+		this.configurationService.afterPropertiesSet();
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns")
 				.actionNs("actionns").remotingApiVar("TEST_REMOTING_API")
 				.pollingUrlsVar("TEST_POLLING_URLS").configuration(config).build();
-		runTest(mockMvc, params, allApis("actionns"));
+		runTest(this.mockMvc, params, allApis("actionns"));
 	}
 
 	@Test
@@ -142,7 +142,7 @@ public class ApiControllerTest {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("").build();
-		runTest(mockMvc, params, emptyGroupApis(null));
+		runTest(this.mockMvc, params, emptyGroupApis(null));
 	}
 
 	@Test
@@ -150,7 +150,7 @@ public class ApiControllerTest {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("     ").build();
-		runTest(mockMvc, params, emptyGroupApis(null));
+		runTest(this.mockMvc, params, emptyGroupApis(null));
 	}
 
 	@Test
@@ -158,13 +158,13 @@ public class ApiControllerTest {
 		Configuration config = new Configuration();
 		config.setEnableBuffer(Boolean.TRUE);
 		config.setTimeout(33333);
-		ReflectionTestUtils.setField(configurationService, "configuration", config);
-		configurationService.afterPropertiesSet();
+		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
+		this.configurationService.afterPropertiesSet();
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("").configuration(config).build();
-		runTest(mockMvc, params, emptyGroupApis(null));
+		runTest(this.mockMvc, params, emptyGroupApis(null));
 	}
 
 	@Test
@@ -172,13 +172,13 @@ public class ApiControllerTest {
 		Configuration config = new Configuration();
 		config.setEnableBuffer(Boolean.TRUE);
 		config.setTimeout(33333);
-		ReflectionTestUtils.setField(configurationService, "configuration", config);
-		configurationService.afterPropertiesSet();
+		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
+		this.configurationService.afterPropertiesSet();
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("        ").configuration(config).build();
-		runTest(mockMvc, params, emptyGroupApis(null));
+		runTest(this.mockMvc, params, emptyGroupApis(null));
 	}
 
 	@Test
@@ -187,13 +187,13 @@ public class ApiControllerTest {
 		config.setEnableBuffer(Boolean.TRUE);
 		config.setTimeout(333);
 		config.setBufferLimit(4);
-		ReflectionTestUtils.setField(configurationService, "configuration", config);
-		configurationService.afterPropertiesSet();
+		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
+		this.configurationService.afterPropertiesSet();
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("        ").configuration(config).build();
-		runTest(mockMvc, params, emptyGroupApis(null));
+		runTest(this.mockMvc, params, emptyGroupApis(null));
 	}
 
 	@Test
@@ -202,29 +202,29 @@ public class ApiControllerTest {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("xy").build();
-		runTest(mockMvc, params, noApis(null));
+		runTest(this.mockMvc, params, noApis(null));
 	}
 
 	@Test
 	public void testUnknownGroupCustomConfig() throws Exception {
 		Configuration config = new Configuration();
 		config.setEnableBuffer(Boolean.TRUE);
-		ReflectionTestUtils.setField(configurationService, "configuration", config);
-		configurationService.afterPropertiesSet();
+		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
+		this.configurationService.afterPropertiesSet();
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("xy").configuration(config).build();
-		runTest(mockMvc, params, noApis(null));
+		runTest(this.mockMvc, params, noApis(null));
 	}
 
 	@Test
 	public void testGroup1() throws Exception {
 		testGroup1(null, null);
 		testGroup1(null, null);
-		apiCache.clear();
+		this.apiCache.clear();
 		testGroup1(null, "-1.0.0");
-		apiCache.clear();
+		this.apiCache.clear();
 		testGroup1(null, "-fingerprinted");
 	}
 
@@ -232,12 +232,12 @@ public class ApiControllerTest {
 	public void testGroup1WithConfig() throws Exception {
 		Configuration config = new Configuration();
 		config.setTimeout(12000);
-		ReflectionTestUtils.setField(configurationService, "configuration", config);
-		configurationService.afterPropertiesSet();
+		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
+		this.configurationService.afterPropertiesSet();
 
 		testGroup1(config, null);
 		testGroup1(config, null);
-		apiCache.clear();
+		this.apiCache.clear();
 		testGroup1(config, "-1.0.0");
 	}
 
@@ -281,16 +281,16 @@ public class ApiControllerTest {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("group2").build();
-		runTest(mockMvc, params, group2Apis(null));
-		runTest(mockMvc, params, group2Apis(null));
+		runTest(this.mockMvc, params, group2Apis(null));
+		runTest(this.mockMvc, params, group2Apis(null));
 	}
 
 	@Test
 	public void testGroup3() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Extns").actionNs("ns")
 				.remotingApiVar("RAPI").pollingUrlsVar("PURLS").group("group3").build();
-		runTest(mockMvc, params, group3Apis("ns"));
-		runTest(mockMvc, params, group3Apis("ns"));
+		runTest(this.mockMvc, params, group3Apis("ns"));
+		runTest(this.mockMvc, params, group3Apis("ns"));
 	}
 
 	@Test
@@ -298,26 +298,26 @@ public class ApiControllerTest {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test").actionNs("")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("group4").build();
-		runTest(mockMvc, params, group4Apis(null));
+		runTest(this.mockMvc, params, group4Apis(null));
 
 		params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("group4").build();
-		runTest(mockMvc, params, group4Apis(null));
+		runTest(this.mockMvc, params, group4Apis(null));
 	}
 
 	@Test
 	public void testGroup1and2() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns")
 				.actionNs("actionns").group("group1,group2").build();
-		runTest(mockMvc, params, group1and2Apis("actionns"));
+		runTest(this.mockMvc, params, group1and2Apis("actionns"));
 	}
 
 	@Test
 	public void testGroup1andUnknown() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns")
 				.actionNs("actionns").group("group1,unknown").build();
-		runTest(mockMvc, params, group1Apis("actionns"));
+		runTest(this.mockMvc, params, group1Apis("actionns"));
 	}
 
 	@Test
@@ -325,12 +325,12 @@ public class ApiControllerTest {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test").actionNs("")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("interface").build();
-		runTest(mockMvc, params, interfaceApis(null));
+		runTest(this.mockMvc, params, interfaceApis(null));
 
 		params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("interface").build();
-		runTest(mockMvc, params, interfaceApis(null));
+		runTest(this.mockMvc, params, interfaceApis(null));
 	}
 
 	@Test
@@ -338,11 +338,11 @@ public class ApiControllerTest {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("").actionNs("")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("group4").build();
-		runTest(mockMvc, params, group4Apis(null));
+		runTest(this.mockMvc, params, group4Apis(null));
 
 		params = ApiRequestParams.builder().apiNs("").remotingApiVar("TEST_REMOTING_API")
 				.pollingUrlsVar("TEST_POLLING_URLS").group("group4").build();
-		runTest(mockMvc, params, group4Apis(null));
+		runTest(this.mockMvc, params, group4Apis(null));
 	}
 
 	@Test
@@ -350,22 +350,22 @@ public class ApiControllerTest {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("apiNs").actionNs("")
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
 				.fullRouterUrl(Boolean.TRUE).group("group2").build();
-		runTest(mockMvc, params, group2Apis(null, "http://localhost/router"));
+		runTest(this.mockMvc, params, group2Apis(null, "http://localhost/router"));
 
 		params = ApiRequestParams.builder().apiNs("apiNs").remotingApiVar("TEST_RMT_API")
 				.pollingUrlsVar("TEST_POLL_URLS").fullRouterUrl(Boolean.TRUE)
 				.group("group2").build();
-		runTest(mockMvc, params, group2Apis(null, "http://localhost/router"));
+		runTest(this.mockMvc, params, group2Apis(null, "http://localhost/router"));
 
 		params = ApiRequestParams.builder().apiNs("apiNs").actionNs("")
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
 				.fullRouterUrl(Boolean.FALSE).group("group2").build();
-		runTest(mockMvc, params, group2Apis(null, "/router"));
+		runTest(this.mockMvc, params, group2Apis(null, "/router"));
 
 		params = ApiRequestParams.builder().apiNs("apiNs").remotingApiVar("TEST_RMT_API")
 				.pollingUrlsVar("TEST_POLL_URLS").fullRouterUrl(Boolean.FALSE)
 				.group("group2").build();
-		runTest(mockMvc, params, group2Apis(null, "/router"));
+		runTest(this.mockMvc, params, group2Apis(null, "/router"));
 	}
 
 	@Test
@@ -373,12 +373,12 @@ public class ApiControllerTest {
 		ApiRequestParams params = ApiRequestParams.builder().actionNs("").apiNs("apiNs")
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
 				.group("group2").format("json").build();
-		runTest(mockMvc, params, group2Apis(null, "http://localhost/router"));
+		runTest(this.mockMvc, params, group2Apis(null, "http://localhost/router"));
 
 		params = ApiRequestParams.builder().actionNs("ns").apiNs("")
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
 				.group("group2").format("json").fullRouterUrl(Boolean.TRUE).build();
-		runTest(mockMvc, params, group2Apis("ns", "http://localhost/router"));
+		runTest(this.mockMvc, params, group2Apis("ns", "http://localhost/router"));
 	}
 
 	@Test
@@ -386,7 +386,7 @@ public class ApiControllerTest {
 		ApiRequestParams params = ApiRequestParams.builder().actionNs("").apiNs("an")
 				.remotingApiVar("rapi").pollingUrlsVar("papi").group("group2")
 				.baseRouterUrl("test").build();
-		runTest(mockMvc, params, group2Apis(null, "test/router"));
+		runTest(this.mockMvc, params, group2Apis(null, "test/router"));
 	}
 
 	@Test
@@ -394,7 +394,7 @@ public class ApiControllerTest {
 		ApiRequestParams params = ApiRequestParams.builder().actionNs("").apiNs("an")
 				.remotingApiVar("rapi").pollingUrlsVar("papi").group("group2")
 				.fullRouterUrl(Boolean.TRUE).baseRouterUrl("service/test/").build();
-		runTest(mockMvc, params, group2Apis(null, "service/test/router"));
+		runTest(this.mockMvc, params, group2Apis(null, "service/test/router"));
 	}
 
 	@Test
@@ -402,7 +402,7 @@ public class ApiControllerTest {
 		ApiRequestParams params = ApiRequestParams.builder().actionNs("").apiNs("an")
 				.remotingApiVar("rapi").pollingUrlsVar("papi").group("group2")
 				.baseRouterUrl("").build();
-		runTest(mockMvc, params, group2Apis(null, "/router"));
+		runTest(this.mockMvc, params, group2Apis(null, "/router"));
 	}
 
 	static void runTest(MockMvc mockMvc, ApiRequestParams params, RemotingApi api)
@@ -414,7 +414,7 @@ public class ApiControllerTest {
 
 	private MvcResult doTest(String url, ApiRequestParams params, RemotingApi expectedApi)
 			throws Exception {
-		return doTest(mockMvc, url, params, expectedApi);
+		return doTest(this.mockMvc, url, params, expectedApi);
 	}
 
 	public static MvcResult doTest(MockMvc mockMvc, String url, ApiRequestParams params,
@@ -501,6 +501,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", Action.create("method3", 3));
 		remotingApi.addAction("remoteProviderSimple", Action.create("method5", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method6", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method6Ed", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method7", 1));
 		remotingApi.addAction("remoteProviderStoreModify", Action.create("update4", 1));
 		remotingApi.addAction("remoteProviderStoreModifyArray",
@@ -512,6 +513,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("formInfoController",
 				Action.createFormHandler("upload", 0));
 		remotingApi.addAction("uploadService", Action.createFormHandler("upload", 0));
+		remotingApi.addAction("uploadService", Action.createFormHandler("uploadEd", 0));
 		remotingApi.addPollingProvider(
 				new PollingProvider("pollProvider", "handleMessage1", "message1"));
 		remotingApi.addPollingProvider(
@@ -529,6 +531,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", Action.create("method3", 3));
 		remotingApi.addAction("remoteProviderSimple", Action.create("method5", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method6", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method6Ed", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method7", 1));
 		remotingApi.addAction("remoteProviderStoreModify", Action.create("update4", 1));
 		remotingApi.addAction("remoteProviderStoreModifyArray",
@@ -540,6 +543,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("formInfoController",
 				Action.createFormHandler("upload", 0));
 		remotingApi.addAction("uploadService", Action.createFormHandler("upload", 0));
+		remotingApi.addAction("uploadService", Action.createFormHandler("uploadEd", 0));
 		remotingApi.addPollingProvider(
 				new PollingProvider("pollProvider", "handleMessage1", "message1"));
 		remotingApi.addPollingProvider(
@@ -558,6 +562,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", Action.create("method5", 1));
 		remotingApi.addAction("remoteProviderSimple", Action.create("method9", 0));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method5", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method5Ed", 1));
 		remotingApi.addAction("remoteProviderStoreModify", Action.create("destroy", 1));
 		remotingApi.addAction("remoteProviderStoreModify",
 				Action.create("destroyNotBatched", 1, false));
@@ -567,10 +572,13 @@ public class ApiControllerTest {
 				Action.create("destroy", 1));
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method1", 1));
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method5", 1));
+		remotingApi.addAction("remoteProviderFormLoad", Action.create("method5Ed", 1));
 		remotingApi.addAction("formInfoController",
 				Action.createFormHandler("updateInfo", 0));
 		remotingApi.addAction("formInfoController",
 				Action.createFormHandler("updateInfoDirect", 0));
+		remotingApi.addAction("formInfoController",
+				Action.createFormHandler("updateInfoDirectEd", 0));
 		remotingApi.addAction("formInfoController2",
 				Action.createFormHandler("updateInfo1", 0));
 		remotingApi.addAction("formInfoController2",
@@ -655,8 +663,11 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method2", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method3", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method4", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method4Ed", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method5", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method6", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method5Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method6Ed", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method7", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method8", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method9", 1));
@@ -664,10 +675,19 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method11", 1));
 		remotingApi.addAction("remoteProviderStoreRead",
 				Action.create("method12", 1, false));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method8Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method9Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method10Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method11Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead",
+				Action.create("method12Ed", 1, false));
+
 		remotingApi.addAction("remoteProviderStoreRead",
 				Action.create("methodFilter", 1));
 		remotingApi.addAction("remoteProviderStoreRead",
 				Action.create("methodMetadata", 1));
+		remotingApi.addAction("remoteProviderStoreRead",
+				Action.create("methodMetadataEd", 1));
 
 		remotingApi.addAction("remoteProviderStoreModify", Action.create("create1", 1));
 		remotingApi.addAction("remoteProviderStoreModify", Action.create("create2", 1));
@@ -729,20 +749,33 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method5", 1));
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method6", 1));
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method7", 1));
+		remotingApi.addAction("remoteProviderFormLoad", Action.create("method5Ed", 1));
+		remotingApi.addAction("remoteProviderFormLoad", Action.create("method6Ed", 1));
+		remotingApi.addAction("remoteProviderFormLoad", Action.create("method7Ed", 1));
 
 		remotingApi.addAction("formInfoController",
 				Action.createFormHandler("updateInfo", 0));
 		remotingApi.addAction("formInfoController",
 				Action.createFormHandler("updateInfoDirect", 0));
 		remotingApi.addAction("formInfoController",
+				Action.createFormHandler("updateInfoDirectEd", 0));
+		remotingApi.addAction("formInfoController",
 				Action.createFormHandler("upload", 0));
 		remotingApi.addAction("uploadService", Action.createFormHandler("upload", 0));
+		remotingApi.addAction("uploadService", Action.createFormHandler("uploadEd", 0));
 
 		remotingApi.addAction("formInfoController3", Action.create("updateInfoJson", 1));
 		remotingApi.addAction("formInfoController3",
 				Action.create("updateInfoJsonDirect", 1));
 		remotingApi.addAction("formInfoController3",
 				Action.create("updateInfoJsonDirectError", 1));
+
+		remotingApi.addAction("formInfoController3",
+				Action.create("updateInfoJsonEd", 1));
+		remotingApi.addAction("formInfoController3",
+				Action.create("updateInfoJsonDirectEd", 1));
+		remotingApi.addAction("formInfoController3",
+				Action.create("updateInfoJsonDirectErrorEd", 1));
 
 		remotingApi.addAction("formInfoController2",
 				Action.createFormHandler("updateInfo1", 0));
@@ -767,6 +800,7 @@ public class ApiControllerTest {
 
 		remotingApi.addAction("bookService", Action.create("read", 1));
 		remotingApi.addAction("bookService", Action.create("readWithPaging", 1));
+		remotingApi.addAction("bookService", Action.create("readWithPagingEd", 1));
 		remotingApi.addAction("bookService", Action.create("update3", 1));
 		remotingApi.addAction("bookService", Action.create("update4", 1));
 		remotingApi.addAction("bookService", Action.create("delete3", 1));
@@ -813,7 +847,7 @@ public class ApiControllerTest {
 				Action.createNamed(
 						"method10", Arrays.asList("flag", "aCharacter", "workflow",
 								"aInt", "aLong", "aDouble", "aFloat", "aShort", "aByte"),
-				null, null));
+						null, null));
 
 		remotingApi.addAction("remoteProviderSimpleNamed",
 				Action.createNamed("method11",
@@ -851,15 +885,15 @@ public class ApiControllerTest {
 				Action.createNamed("withRequestHeader", Arrays.asList("bd"), null, null));
 		remotingApi.addAction("remoteProviderSimpleNamed", Action.createNamed(
 				"withRequiredRequestHeader", Arrays.asList("bd"), null, null));
-		remotingApi.addAction("remoteProviderSimpleNamed", Action.createNamed(
-				"notBatched", Collections.<String> emptyList(), null, false));
+		remotingApi.addAction("remoteProviderSimpleNamed", Action
+				.createNamed("notBatched", Collections.<String>emptyList(), null, false));
 
 		remotingApi.addAction("remoteProviderSimpleNamed", Action.createNamed(
-				"nonStrictMethod1", Collections.<String> emptyList(), null, null));
+				"nonStrictMethod1", Collections.<String>emptyList(), null, null));
 		remotingApi.addAction("remoteProviderSimpleNamed", Action.createNamed(
-				"nonStrictMethod2", Collections.<String> emptyList(), null, null));
+				"nonStrictMethod2", Collections.<String>emptyList(), null, null));
 		remotingApi.addAction("remoteProviderSimpleNamed", Action.createNamed(
-				"nonStrictMethod3", Collections.<String> emptyList(), null, null));
+				"nonStrictMethod3", Collections.<String>emptyList(), null, null));
 
 		remotingApi.addPollingProvider(
 				new PollingProvider("pollProvider", "handleMessage1", "message1"));
@@ -945,6 +979,10 @@ public class ApiControllerTest {
 				1, Collections.singletonList("mp"), null));
 		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method2",
 				1, Collections.singletonList("id"), null));
+		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method1Ed",
+				1, Collections.singletonList("mp"), null));
+		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method2Ed",
+				1, Collections.singletonList("id"), null));
 		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method3",
 				1, Collections.singletonList("id"), null));
 		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method4",
@@ -952,6 +990,10 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method5",
 				1, Collections.singletonList("id"), null));
 		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method6",
+				1, Collections.singletonList("id"), null));
+		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method5Ed",
+				1, Collections.singletonList("id"), null));
+		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method6Ed",
 				1, Collections.singletonList("id"), null));
 		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("update1",
 				1, Collections.singletonList("id"), null));
@@ -1008,16 +1050,25 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method2", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method3", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method4", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method4Ed", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method8", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method9", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method10", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method11", 1));
 		remotingApi.addAction("remoteProviderStoreRead",
 				Action.create("method12", 1, false));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method8Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method9Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method10Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method11Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead",
+				Action.create("method12Ed", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead",
 				Action.create("methodFilter", 1));
 		remotingApi.addAction("remoteProviderStoreRead",
 				Action.create("methodMetadata", 1));
+		remotingApi.addAction("remoteProviderStoreRead",
+				Action.create("methodMetadataEd", 1));
 
 		remotingApi.addAction("remoteProviderStoreModify", Action.create("create1", 1));
 		remotingApi.addAction("remoteProviderStoreModify", Action.create("create2", 1));
@@ -1063,6 +1114,8 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method4", 1));
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method6", 1));
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method7", 1));
+		remotingApi.addAction("remoteProviderFormLoad", Action.create("method6Ed", 1));
+		remotingApi.addAction("remoteProviderFormLoad", Action.create("method7Ed", 1));
 
 		remotingApi.addAction("remoteProviderTreeLoad", Action.create("method2", 1));
 		remotingApi.addAction("remoteProviderTreeLoad", Action.create("method4", 1));
@@ -1076,6 +1129,13 @@ public class ApiControllerTest {
 				Action.create("updateInfoJsonDirect", 1));
 		remotingApi.addAction("formInfoController3",
 				Action.create("updateInfoJsonDirectError", 1));
+
+		remotingApi.addAction("formInfoController3",
+				Action.create("updateInfoJsonEd", 1));
+		remotingApi.addAction("formInfoController3",
+				Action.create("updateInfoJsonDirectEd", 1));
+		remotingApi.addAction("formInfoController3",
+				Action.create("updateInfoJsonDirectErrorEd", 1));
 
 		remotingApi.addPollingProvider(
 				new PollingProvider("pollProvider", "handleMessage4", "message4"));

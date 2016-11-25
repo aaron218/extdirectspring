@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,12 +45,18 @@ public class RawJsonControllerTest extends JettyTest {
 		testAndCheck("rawJsonController", "listUsers3", 2, false);
 		testAndCheck("rawJsonController", "listUsers4", 2, true);
 		testAndCheck("rawJsonController", "listUsers5", 2, true);
+
+		testAndCheck("rawJsonController", "listUsers1Ed", null, true);
+		testAndCheck("rawJsonController", "listUsers2Ed", 2, true);
+		testAndCheck("rawJsonController", "listUsers3Ed", 2, false);
+		testAndCheck("rawJsonController", "listUsers4Ed", 2, true);
+		testAndCheck("rawJsonController", "listUsers5Ed", 2, true);
 	}
 
 	@SuppressWarnings("unchecked")
 	private static void testAndCheck(String action, String method, Integer total,
 			boolean success)
-					throws IOException, JsonParseException, JsonMappingException {
+			throws IOException, JsonParseException, JsonMappingException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {

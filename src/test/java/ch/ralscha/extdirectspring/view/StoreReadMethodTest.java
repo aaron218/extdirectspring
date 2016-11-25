@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ public class StoreReadMethodTest extends BaseViewTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
@@ -105,9 +105,29 @@ public class StoreReadMethodTest extends BaseViewTest {
 		callMethod("storeReadMethodService", "overrideResultNoView", noView());
 	}
 
+	@Test
+	public void testResultSummaryViewEd() {
+		callMethod("storeReadMethodService", "resultSummaryViewEd", summaryView());
+	}
+
+	@Test
+	public void testResultDetailViewEd() {
+		callMethod("storeReadMethodService", "resultDetailViewEd", detailView());
+	}
+
+	@Test
+	public void testOverrideResultDetailViewEd() {
+		callMethod("storeReadMethodService", "overrideResultDetailViewEd", detailView());
+	}
+
+	@Test
+	public void testOverrideResultNoViewEd() {
+		callMethod("storeReadMethodService", "overrideResultNoViewEd", noView());
+	}
+
 	@SuppressWarnings("unchecked")
 	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
-		Object obj = ControllerUtil.sendAndReceiveObject(mockMvc, bean, method);
+		Object obj = ControllerUtil.sendAndReceiveObject(this.mockMvc, bean, method);
 		List<Map<String, Object>> records;
 
 		if (obj instanceof List) {

@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.util;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -49,6 +50,7 @@ import org.springframework.web.util.WebUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
@@ -112,7 +114,7 @@ public final class ParametersResolver {
 
 				if (methodParameter.isSupportedParameter()) {
 					parameters[paramIndex] = SupportedParameters.resolveParameter(
-							methodParameter.getType(), request, response, locale);
+							methodParameter.getType(), request, response, locale, null);
 				}
 				else if (methodParameter.hasRequestHeaderAnnotation()) {
 					parameters[paramIndex] = resolveRequestHeader(request,
@@ -185,16 +187,16 @@ public final class ParametersResolver {
 						}
 						else {
 							directStoreModifyRecords = new ArrayList<Object>();
-							directStoreModifyRecords.add(jsonHandler.convertValue(records,
-									directStoreEntryClass));
+							directStoreModifyRecords.add(this.jsonHandler
+									.convertValue(records, directStoreEntryClass));
 						}
 						remainingParameters = new HashMap<String, Object>(jsonData);
 						remainingParameters.remove("records");
 					}
 					else {
 						directStoreModifyRecords = new ArrayList<Object>();
-						directStoreModifyRecords.add(jsonHandler.convertValue(jsonData,
-								directStoreEntryClass));
+						directStoreModifyRecords.add(this.jsonHandler
+								.convertValue(jsonData, directStoreEntryClass));
 					}
 				}
 				jsonParamIndex = 1;
@@ -246,7 +248,8 @@ public final class ParametersResolver {
 
 				if (methodParameter.isSupportedParameter()) {
 					parameters[paramIndex] = SupportedParameters.resolveParameter(
-							methodParameter.getType(), request, response, locale);
+							methodParameter.getType(), request, response, locale,
+							directRequest);
 				}
 				else if (ExtDirectStoreReadRequest.class
 						.isAssignableFrom(methodParameter.getType())) {
@@ -414,7 +417,8 @@ public final class ParametersResolver {
 		String value = null;
 
 		if (cookieValue != null) {
-			value = urlPathHelper.decodeRequestString(request, cookieValue.getValue());
+			value = this.urlPathHelper.decodeRequestString(request,
+					cookieValue.getValue());
 		}
 		else {
 			value = parameterInfo.getDefaultValue();
@@ -439,7 +443,7 @@ public final class ParametersResolver {
 	}
 
 	private Object resolveAuthenticationPrincipal(ParameterInfo parameterInfo) {
-		Object principal = getPrincipalExpression.getValue();
+		Object principal = this.getPrincipalExpression.getValue();
 
 		if (principal != null
 				&& !parameterInfo.getType().isAssignableFrom(principal.getClass())) {
@@ -454,41 +458,58 @@ public final class ParametersResolver {
 
 	private Object convertValue(Object value, ParameterInfo methodParameter) {
 		if (value != null) {
-			if (methodParameter.getType().equals(value.getClass())) {
+			Class<?> rawType = methodParameter.getType();
+			if (rawType.equals(value.getClass())) {
 				return value;
 			}
-			else if (conversionService.canConvert(TypeDescriptor.forObject(value),
+			else if (this.conversionService.canConvert(TypeDescriptor.forObject(value),
 					methodParameter.getTypeDescriptor())) {
 
 				try {
-					return conversionService.convert(value,
+					return this.conversionService.convert(value,
 							TypeDescriptor.forObject(value),
 							methodParameter.getTypeDescriptor());
 				}
 				catch (ConversionFailedException e) {
 					// ignore this exception for collections and arrays.
 					// try to convert the value with jackson
-					TypeFactory typeFactory = jsonHandler.getMapper().getTypeFactory();
+					TypeFactory typeFactory = this.jsonHandler.getMapper()
+							.getTypeFactory();
 					if (methodParameter.getTypeDescriptor().isCollection()) {
-						JavaType type = CollectionType
-								.construct(methodParameter.getType(),
-										typeFactory.constructType(methodParameter
-												.getTypeDescriptor()
-												.getElementTypeDescriptor().getType()));
-						return jsonHandler.convertValue(value, type);
+
+						JavaType elemType = typeFactory
+								.constructType(methodParameter.getTypeDescriptor()
+										.getElementTypeDescriptor().getType());
+						TypeVariable<?>[] vars = rawType.getTypeParameters();
+						TypeBindings bindings;
+						if ((vars == null) || (vars.length != 1)) {
+							bindings = TypeBindings.emptyBindings();
+						}
+						else {
+							bindings = TypeBindings.create(rawType, elemType);
+						}
+						JavaType superClass = null;
+						Class<?> parent = rawType.getSuperclass();
+						if (parent != null) {
+							superClass = TypeFactory.unknownType();
+						}
+
+						JavaType type = CollectionType.construct(rawType, bindings,
+								superClass, null, elemType);
+						return this.jsonHandler.convertValue(value, type);
 					}
 					else if (methodParameter.getTypeDescriptor().isArray()) {
 						JavaType type = typeFactory
 								.constructArrayType(methodParameter.getTypeDescriptor()
 										.getElementTypeDescriptor().getType());
-						return jsonHandler.convertValue(value, type);
+						return this.jsonHandler.convertValue(value, type);
 					}
 
 					throw e;
 				}
 			}
 			else {
-				return jsonHandler.convertValue(value, methodParameter.getType());
+				return this.jsonHandler.convertValue(value, rawType);
 			}
 
 		}
@@ -511,13 +532,14 @@ public final class ParametersResolver {
 				List<Filter> filters = new ArrayList<Filter>();
 
 				if (value instanceof String) {
-					List<Map<String, Object>> rawFilters = jsonHandler.readValue(
+					List<Map<String, Object>> rawFilters = this.jsonHandler.readValue(
 							(String) value,
 							new TypeReference<List<Map<String, Object>>>() {/* empty */
 							});
 
 					for (Map<String, Object> rawFilter : rawFilters) {
-						Filter filter = Filter.createFilter(rawFilter, conversionService);
+						Filter filter = Filter.createFilter(rawFilter,
+								this.conversionService);
 						if (filter != null) {
 							filters.add(filter);
 						}
@@ -527,7 +549,8 @@ public final class ParametersResolver {
 					@SuppressWarnings("unchecked")
 					List<Map<String, Object>> filterList = (List<Map<String, Object>>) value;
 					for (Map<String, Object> rawFilter : filterList) {
-						Filter filter = Filter.createFilter(rawFilter, conversionService);
+						Filter filter = Filter.createFilter(rawFilter,
+								this.conversionService);
 						if (filter != null) {
 							filters.add(filter);
 						}
@@ -568,7 +591,7 @@ public final class ParametersResolver {
 				if (descriptor != null && descriptor.getWriteMethod() != null) {
 					try {
 
-						descriptor.getWriteMethod().invoke(to, conversionService
+						descriptor.getWriteMethod().invoke(to, this.conversionService
 								.convert(value, descriptor.getPropertyType()));
 
 						foundParameters.add(key);
@@ -628,7 +651,7 @@ public final class ParametersResolver {
 		if (records != null) {
 			List<Object> convertedList = new ArrayList<Object>();
 			for (Object record : records) {
-				Object convertedObject = jsonHandler.convertValue(record,
+				Object convertedObject = this.jsonHandler.convertValue(record,
 						directStoreType);
 				convertedList.add(convertedObject);
 			}

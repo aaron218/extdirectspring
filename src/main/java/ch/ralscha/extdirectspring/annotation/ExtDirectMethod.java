@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,8 +88,7 @@ public @interface ExtDirectMethod {
 	 * <p/>
 	 * Defaults to no documentation.
 	 */
-	ExtDirectMethodDocumentation documentation() default @ExtDirectMethodDocumentation
-	;
+	ExtDirectMethodDocumentation documentation() default @ExtDirectMethodDocumentation;
 
 	/**
 	 * (Optional) Specifies a JSON View (filter) that Jackson uses to serialize the

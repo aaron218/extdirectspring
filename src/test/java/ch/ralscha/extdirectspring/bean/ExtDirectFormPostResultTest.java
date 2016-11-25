@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class ExtDirectFormPostResultTest {
 
 	@Test
 	public void testExtDirectFormPostResultBindingResult() {
-		BindingResult br = new TestBindingResult(Collections.<FieldError> emptyList());
+		BindingResult br = new TestBindingResult(Collections.<FieldError>emptyList());
 		ExtDirectFormPostResult result = new ExtDirectFormPostResult(br);
 		assertThat(result.getResult()).hasSize(1)
 				.contains(MapEntry.entry("success", Boolean.TRUE));
@@ -69,7 +69,7 @@ public class ExtDirectFormPostResultTest {
 
 	@Test
 	public void testExtDirectFormPostResultBindingResultBoolean() {
-		BindingResult br = new TestBindingResult(Collections.<FieldError> emptyList());
+		BindingResult br = new TestBindingResult(Collections.<FieldError>emptyList());
 		ExtDirectFormPostResult result = new ExtDirectFormPostResult(br, false);
 		assertThat(result.getResult()).hasSize(1)
 				.contains(MapEntry.entry("success", Boolean.FALSE));
@@ -181,7 +181,7 @@ public class ExtDirectFormPostResultTest {
 
 		@Override
 		public List<FieldError> getFieldErrors() {
-			return errors;
+			return this.errors;
 		}
 
 	}

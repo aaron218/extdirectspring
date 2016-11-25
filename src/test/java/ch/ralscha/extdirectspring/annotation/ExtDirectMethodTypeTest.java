@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -116,6 +116,9 @@ public class ExtDirectMethodTypeTest {
 
 		assertThat(ExtDirectMethodType.FORM_POST.isValid("uploadService.upload",
 				UploadService.class, findMethod(UploadService.class, "upload"))).isTrue();
+		assertThat(ExtDirectMethodType.FORM_POST.isValid("uploadService.uploadEd",
+				UploadService.class, findMethod(UploadService.class, "uploadEd")))
+						.isTrue();
 
 		assertThat(ExtDirectMethodType.FORM_POST.isValid(
 				"formInfoController2.updateInfo1", FormInfoController2.class,
@@ -142,7 +145,9 @@ public class ExtDirectMethodTypeTest {
 		assertThat(ExtDirectMethodType.FORM_POST.isValid(
 				"formInfoController.updateInfoDirect", FormInfoController.class,
 				findMethod(FormInfoController.class, "updateInfoDirect"))).isTrue();
-
+		assertThat(ExtDirectMethodType.FORM_POST.isValid(
+				"formInfoController.updateInfoDirectEd", FormInfoController.class,
+				findMethod(FormInfoController.class, "updateInfoDirectEd"))).isTrue();
 	}
 
 	@Test

@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,13 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 
+import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
+
 public class SupportedParametersTest {
 
 	@Test
 	public void testIsSupported() {
-		assertThat(SupportedParameters.values().length).isEqualTo(5);
+		assertThat(SupportedParameters.values().length).isEqualTo(6);
 		assertThat(SupportedParameters.isSupported(String.class)).isFalse();
 		assertThat(SupportedParameters.isSupported(null)).isFalse();
 		assertThat(SupportedParameters.isSupported(MockHttpServletResponse.class))
@@ -39,6 +41,7 @@ public class SupportedParametersTest {
 		assertThat(SupportedParameters.isSupported(MockHttpSession.class)).isTrue();
 		assertThat(SupportedParameters.isSupported(Locale.class)).isTrue();
 		assertThat(SupportedParameters.isSupported(Principal.class)).isTrue();
+		assertThat(SupportedParameters.isSupported(ExtDirectRequest.class)).isTrue();
 	}
 
 	@Test
@@ -48,21 +51,22 @@ public class SupportedParametersTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		Locale en = Locale.ENGLISH;
 
-		assertThat(
-				SupportedParameters.resolveParameter(String.class, request, response, en))
-						.isNull();
-		assertThat(SupportedParameters.resolveParameter(MockHttpServletRequest.class,
-				request, response, en)).isSameAs(request);
-		assertThat(SupportedParameters.resolveParameter(MockHttpSession.class, request,
-				response, en)).isSameAs(request.getSession());
-		assertThat(SupportedParameters.resolveParameter(Principal.class, request,
-				response, en)).isSameAs(request.getUserPrincipal());
-		assertThat(SupportedParameters.resolveParameter(MockHttpServletResponse.class,
-				request, response, en)).isSameAs(response);
-		assertThat(
-				SupportedParameters.resolveParameter(Locale.class, request, response, en))
-						.isSameAs(en);
+		ExtDirectRequest edr = new ExtDirectRequest();
 
+		assertThat(SupportedParameters.resolveParameter(String.class, request, response,
+				en, edr)).isNull();
+		assertThat(SupportedParameters.resolveParameter(MockHttpServletRequest.class,
+				request, response, en, edr)).isSameAs(request);
+		assertThat(SupportedParameters.resolveParameter(MockHttpSession.class, request,
+				response, en, edr)).isSameAs(request.getSession());
+		assertThat(SupportedParameters.resolveParameter(Principal.class, request,
+				response, en, edr)).isSameAs(request.getUserPrincipal());
+		assertThat(SupportedParameters.resolveParameter(MockHttpServletResponse.class,
+				request, response, en, edr)).isSameAs(response);
+		assertThat(SupportedParameters.resolveParameter(Locale.class, request, response,
+				en, edr)).isSameAs(en);
+		assertThat(SupportedParameters.resolveParameter(ExtDirectRequest.class, request,
+				response, en, edr)).isSameAs(edr);
 	}
 
 }

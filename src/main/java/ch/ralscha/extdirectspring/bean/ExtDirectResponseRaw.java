@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,27 +35,27 @@ public class ExtDirectResponseRaw extends BaseResponse {
 	private final String result;
 
 	public ExtDirectResponseRaw(ExtDirectResponse response, String result) {
-		action = response.getAction();
-		method = response.getMethod();
-		tid = response.getTid();
+		this.action = response.getAction();
+		this.method = response.getMethod();
+		this.tid = response.getTid();
 		setType(response.getType());
 		this.result = result;
 	}
 
 	public int getTid() {
-		return tid;
+		return this.tid;
 	}
 
 	public String getAction() {
-		return action;
+		return this.action;
 	}
 
 	public String getMethod() {
-		return method;
+		return this.method;
 	}
 
 	public String getResult() {
-		return result;
+		return this.result;
 	}
 
 }

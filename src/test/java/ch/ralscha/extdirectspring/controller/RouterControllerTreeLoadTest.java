@@ -1,5 +1,5 @@
 /**
- * Copyright 2010-2014 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2010-2016 Ralph Schaer <ralphschaer@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class RouterControllerTreeLoadTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -64,7 +64,7 @@ public class RouterControllerTreeLoadTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderTreeLoad", "method1",
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
@@ -76,7 +76,7 @@ public class RouterControllerTreeLoadTest {
 		requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "n1");
 
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderTreeLoad", "method1",
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
@@ -95,7 +95,7 @@ public class RouterControllerTreeLoadTest {
 		requestParameters.put("foo", "foo");
 		requestParameters.put("today", ISODateTimeFormat.date().print(new LocalDate()));
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderTreeLoad", "method2",
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
@@ -113,7 +113,7 @@ public class RouterControllerTreeLoadTest {
 		requestParameters.put("today",
 				ISODateTimeFormat.date().print(new LocalDate().plusDays(10)));
 
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderTreeLoad", "method2",
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
@@ -136,7 +136,7 @@ public class RouterControllerTreeLoadTest {
 		List<Cookie> cookies = new ArrayList<Cookie>();
 		cookies.add(new Cookie("theCookie", "value"));
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, false,
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, false,
 				null, cookies, null, "remoteProviderTreeLoad", "method3", false,
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
@@ -154,8 +154,8 @@ public class RouterControllerTreeLoadTest {
 		requestParameters.put("node", "n2");
 		requestParameters.put("foo", "f");
 
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, false, null, cookies,
-				null, "remoteProviderTreeLoad", "method3", false,
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, false, null,
+				cookies, null, "remoteProviderTreeLoad", "method3", false,
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
@@ -187,8 +187,8 @@ public class RouterControllerTreeLoadTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, headers,
-				"remoteProviderTreeLoad", method,
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
+				headers, "remoteProviderTreeLoad", method,
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
@@ -204,7 +204,7 @@ public class RouterControllerTreeLoadTest {
 		headers = new HttpHeaders();
 		headers.add("aHeader", "false");
 
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, headers,
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, headers,
 				"remoteProviderTreeLoad", method,
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
@@ -223,7 +223,7 @@ public class RouterControllerTreeLoadTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
-		Node node = (Node) ControllerUtil.sendAndReceive(mockMvc,
+		Node node = (Node) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderTreeLoad", "method6", Node.class, requestParameters);
 
 		assertThat(node.id).isEqualTo("n1");
